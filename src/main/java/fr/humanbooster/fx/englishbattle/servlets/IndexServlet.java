@@ -5,7 +5,9 @@ import java.util.List;
 
 import fr.humanbooster.fx.englishbattle.business.Joueur;
 import fr.humanbooster.fx.englishbattle.service.JoueurService;
+import fr.humanbooster.fx.englishbattle.service.VerbeService;
 import fr.humanbooster.fx.englishbattle.service.impl.JoueurServiceImpl;
+import fr.humanbooster.fx.englishbattle.service.impl.VerbeServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,6 +22,7 @@ public class IndexServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JoueurService joueursService = new JoueurServiceImpl();
+	private VerbeService verbesService = new VerbeServiceImpl();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -27,6 +30,7 @@ public class IndexServlet extends HttpServlet {
 		String erreur = req.getParameter("erreur");
 		req.setAttribute("erreur", erreur);
 		req.setAttribute("joueurs", joueurs);
+		req.setAttribute("nbVerbes", verbesService.recupererNbVerbes());
 		
 		try {
 			req.getRequestDispatcher("WEB-INF/index.jsp").forward(req, resp);

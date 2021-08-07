@@ -23,9 +23,12 @@
 		<br>
 		<input type="submit" value="connexion">
 	</form>
-	<a href="inscription">inscription</a>
+	<a href="inscription">inscription</a><br>
+	<a href="inscriptionNew">inscription avec upload</a>
 	<br>
-	<a href="verbes">liste des verbes</a>
+	<p>nombre de verbes : ${nbVerbes}</p>
+	<a href="verbes">liste des verbes</a> <br>
+	<p>nombre de joueurs : ${joueurs.size()}</p>
 	<a href="joueurs">liste des joueurs</a>
 	<br>
 	<h2>Hall of Fame</h2>

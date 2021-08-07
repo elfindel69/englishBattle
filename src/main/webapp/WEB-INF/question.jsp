@@ -10,7 +10,7 @@
 <body>
 	<p> ENGLISH BATTLE utilisateur ${joueur.prenom}, meilleur score: ${joueur.meilleurScore} verbes <a href="deconnection">déconnection</a></p>
 	
-	<h2> Question ${nbQuestion}: ${verbe.baseVerbale }</h2>
+	<h2> Question ${sessionScope.partie.nbQuestions}: ${verbe.baseVerbale }</h2>
 	<p> il reste : ${sec} secondes </p> 
 	<form action="correction"  method="post">
 		<p> ${verbe.baseVerbale}</p>

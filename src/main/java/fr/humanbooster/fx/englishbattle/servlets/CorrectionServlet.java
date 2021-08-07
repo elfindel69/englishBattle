@@ -1,7 +1,6 @@
 package fr.humanbooster.fx.englishbattle.servlets;
 
 import java.io.IOException;
-import java.util.List;
 
 import fr.humanbooster.fx.englishbattle.business.Joueur;
 import fr.humanbooster.fx.englishbattle.business.Partie;
@@ -58,8 +57,11 @@ public class CorrectionServlet extends HttpServlet {
        System.out.println("question verbe: "+question.getVerbe().getBaseVerbale());
        question =  questionsService.mettreAJourQuestion(question.getId(), preterit, pp);
        boolean res = questionsService.verifierReponse(question);
-       
-       if(res) {
+       long tempsDeReponseEnMilliSecondes = question.getDateReponse().getTime()
+				- question.getDateEnvoi().getTime();
+
+		System.out.println(tempsDeReponseEnMilliSecondes);
+       if(res && tempsDeReponseEnMilliSecondes<60000) {
     	   Partie partie = (Partie)req.getSession().getAttribute("partie");
     	   Joueur joueur = partie.getJoueur();
     	   System.out.println("réponse OK");
@@ -75,17 +77,11 @@ public class CorrectionServlet extends HttpServlet {
 	   			req.getRequestDispatcher("WEB-INF/index.jsp").forward(req, resp);
    			}
 	       question = questionsService.ajouterQuestion(partie, verbe);
-	       List<Question> questions = partie.getQuestions();
-	       questions.add(question);
-	       partie.setQuestions(questions);
 	       req.getSession().setAttribute("partie", partie);
 	       req.getSession().setAttribute("question", question);
 		   req.getRequestDispatcher("jeu").forward(req, resp);
        }else {
     	   System.out.println("réponse KO");
-    	   Partie partie = (Partie)req.getSession().getAttribute("partie");
-    	   Joueur joueur = partie.getJoueur();
-    	   joueursService.definirJoueurEnLigne(joueur, false);
     	   req.getSession().invalidate();
     	   resp.sendRedirect("index");
        }		       

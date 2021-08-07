@@ -1,8 +1,6 @@
 package fr.humanbooster.fx.englishbattle.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import fr.humanbooster.fx.englishbattle.business.Joueur;
 import fr.humanbooster.fx.englishbattle.business.Niveau;
@@ -28,8 +26,7 @@ public class QuestionServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static VerbeService verbesService = new VerbeServiceImpl();
-	
-	private static List<Question> questions = new ArrayList<>();
+
 	private static QuestionService questionsService = new QuestionServiceImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
@@ -61,9 +58,6 @@ public class QuestionServlet extends HttpServlet {
 	    			req.getRequestDispatcher("WEB-INF/index.jsp").forward(req, resp);
 	    		}
 	            question = questionsService.ajouterQuestion(partie, verbe);
-	            List<Question> questions = new ArrayList<>();
-	        	questions.add(question);
-	        	partie.setQuestions(questions);
 	        	req.getSession().setAttribute("question", question);
         }
         Verbe verbe = question.getVerbe();
@@ -72,7 +66,6 @@ public class QuestionServlet extends HttpServlet {
         	req.setAttribute("joueur", joueur);
         	req.setAttribute("niveau", niveau);
         	
-        	partie.setQuestions(questions);
         	long sec = question.getNbSecondesRestantes();
         	String preterit = "";
         	String pp = "";
@@ -82,12 +75,10 @@ public class QuestionServlet extends HttpServlet {
     			preterit = verbe.getPreterit();
     			pp = verbe.getParticipePasse();
         	}
-        	int nbQuestion = partie.getNbQuestions();
-        	System.out.println("nb: "+nbQuestion+1);
+        	
         	req.setAttribute("sec", sec);
         	req.setAttribute("preterit", preterit);
         	req.setAttribute("pp", pp);
-        	req.setAttribute("nbQuestion", nbQuestion);
         	System.out.println("question: "+question.getVerbe().getBaseVerbale());
         	req.getSession().setAttribute("question", question);
         	req.getSession().setAttribute("partie", partie);

@@ -23,6 +23,7 @@
 	</form>
 	<table>
 		<tr>
+			<th>Image</th>
 			<th>Prénom</th>
 			<th>Nom</th>
 			<th><a href="joueurs?triListe=1">Ville</a></th>
@@ -31,6 +32,7 @@
 		</tr>
 		<c:forEach var="joueur" items="${joueurs}">
 			<tr>
+				<td> <img src="images/${joueur.id}.jpg" height="150px"></td>
 				<td>${joueur.prenom}</td>
 				<td>${joueur.nom}</td>
 				<td>${joueur.ville.nom}</td>
