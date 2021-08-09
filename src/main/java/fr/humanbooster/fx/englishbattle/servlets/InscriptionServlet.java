@@ -104,7 +104,7 @@ public class InscriptionServlet extends HttpServlet{
 		if(villes != null) {
 			req.setAttribute("villes", villes);
 		}
-		req.setAttribute("erreur","ville non renseignée :(");
+		req.setAttribute("erreur","erreur de saisie:(");
 		req.setAttribute("idNiveau", niveauID);
 		try {
 			req.getRequestDispatcher("WEB-INF/inscription.jsp").forward(req, resp);

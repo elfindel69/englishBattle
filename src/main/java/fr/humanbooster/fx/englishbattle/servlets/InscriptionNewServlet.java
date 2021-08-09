@@ -135,5 +135,31 @@ public class InscriptionNewServlet extends HttpServlet {
 			}
 		}
         
+        req.setAttribute("prenom", prenom);
+		req.setAttribute("nom", nom);
+		req.setAttribute("email", email);
+		req.setAttribute("idVille", villeID);
+		List<Niveau>  niveaux= null;
+		niveaux = niveauxService.recupererNiveaux();
+		
+		if(niveaux != null) {
+			req.setAttribute("niveaux", niveaux);
+		}
+		
+		List<Ville> villes = null;
+		villes = villesService.recupererVilles();
+		
+		if(villes != null) {
+			req.setAttribute("villes", villes);
+		}
+		req.setAttribute("erreur","erreur de saisie:(");
+		req.setAttribute("idNiveau", niveauID);
+		try {
+			req.getRequestDispatcher("WEB-INF/inscription.jsp").forward(req, resp);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 	}
 }
