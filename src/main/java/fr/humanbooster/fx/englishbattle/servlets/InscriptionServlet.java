@@ -58,35 +58,85 @@ public class InscriptionServlet extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-		Joueur joueur = new Joueur();
+	
 		String prenom = req.getParameter("prenom");
-		joueur.setPrenom(prenom);
-		
+	
 		String nom = req.getParameter("nom");
-		joueur.setNom(nom);
-		
+	
 		String email = req.getParameter("email");
-		joueur.setEmail(email);
 		
 		String password = req.getParameter("password");
-		joueur.setMotDePasse(password);
 		
 		Long villeID = Long.parseLong(req.getParameter("ville"));
 		
 		
 		Long niveauID = Long.parseLong(req.getParameter("niveau"));
-		
-		joueur = joueursService.ajouterJoueur(email, nom, prenom, password, niveauID, villeID);
-		System.out.println(joueur);
-		
-		try {
-			req.setAttribute("joueur", joueur);
-			req.getRequestDispatcher("WEB-INF/merciInscription.jsp").forward(req, resp);
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(villeID == 0 || villeID == null) {
+			req.setAttribute("prenom", prenom);
+			req.setAttribute("nom", nom);
+			req.setAttribute("email", email);
+			req.setAttribute("idVille", villeID);
+			List<Niveau>  niveaux= null;
+			niveaux = niveauxService.recupererNiveaux();
+			
+			if(niveaux != null) {
+				req.setAttribute("niveaux", niveaux);
+			}
+			
+			List<Ville> villes = null;
+			villes = villesService.recupererVilles();
+			
+			if(villes != null) {
+				req.setAttribute("villes", villes);
+			}
+			req.setAttribute("erreur","ville non renseignée :(");
+			req.setAttribute("idNiveau", niveauID);
+			try {
+				req.getRequestDispatcher("WEB-INF/inscription.jsp").forward(req, resp);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			
+			if(niveauID == 0 || niveauID == null) {
+				req.setAttribute("prenom", prenom);
+				req.setAttribute("nom", nom);
+				req.setAttribute("email", email);
+				req.setAttribute("idVille", villeID);
+				List<Niveau>  niveaux= null;
+				niveaux = niveauxService.recupererNiveaux();
+				
+				if(niveaux != null) {
+					req.setAttribute("niveaux", niveaux);
+				}
+				
+				List<Ville> villes = null;
+				villes = villesService.recupererVilles();
+				
+				if(villes != null) {
+					req.setAttribute("villes", villes);
+				}
+				req.setAttribute("erreur","niveau non renseigné :(");
+				
+				try {
+					req.getRequestDispatcher("WEB-INF/inscription.jsp").forward(req, resp);
+				} catch (ServletException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				Joueur joueur = joueursService.ajouterJoueur(email, nom, prenom, password, niveauID, villeID);
+				System.out.println(joueur);
+				
+				try {
+					req.setAttribute("joueur", joueur);
+					req.getRequestDispatcher("WEB-INF/merciInscription.jsp").forward(req, resp);
+				} catch (ServletException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		
-		
 	}
 }

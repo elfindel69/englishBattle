@@ -101,33 +101,89 @@ public class InscriptionNewServlet extends HttpServlet {
                 break;
             }
          }
-		
-        Joueur joueur = joueursService.ajouterJoueur(email, nom, prenom, password, niveauID, villeID);
-		System.out.println(joueur);
-		
-		String image = cheminDeBase + separateur + "wtpwebapps" + separateur + nomApplication + separateur
-				+ "images" + separateur + joueur.getId() + ".jpg";
-
-		for (Part part : parts) {
-			switch (part.getName()) {
-			case "file":
+        if(villeID == 0 || villeID == null) {
+			req.setAttribute("prenom", prenom);
+			req.setAttribute("nom", nom);
+			req.setAttribute("email", email);
+			req.setAttribute("idVille", villeID);
+			List<Niveau>  niveaux= null;
+			niveaux = niveauxService.recupererNiveaux();
+			
+			if(niveaux != null) {
+				req.setAttribute("niveaux", niveaux);
+			}
+			
+			List<Ville> villes = null;
+			villes = villesService.recupererVilles();
+			
+			if(villes != null) {
+				req.setAttribute("villes", villes);
+			}
+			req.setAttribute("erreur","ville non renseignée :(");
+			req.setAttribute("idNiveau", niveauID);
+			try {
+				req.getRequestDispatcher("WEB-INF/inscriptionNew.jsp").forward(req, resp);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			if(niveauID == 0 || niveauID == null) {
+				req.setAttribute("prenom", prenom);
+				req.setAttribute("nom", nom);
+				req.setAttribute("email", email);
+				req.setAttribute("idVille", villeID);
+				List<Niveau>  niveaux= null;
+				niveaux = niveauxService.recupererNiveaux();
+				
+				if(niveaux != null) {
+					req.setAttribute("niveaux", niveaux);
+				}
+				
+				List<Ville> villes = null;
+				villes = villesService.recupererVilles();
+				
+				if(villes != null) {
+					req.setAttribute("villes", villes);
+				}
+				req.setAttribute("erreur","niveau non renseigné :(");
+				
 				try {
-					part.write(image);
-				} catch (IOException e) {
+					req.getRequestDispatcher("WEB-INF/inscriptionNew.jsp").forward(req, resp);
+				} catch (ServletException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				break;
+			}else {
+				Joueur joueur = joueursService.ajouterJoueur(email, nom, prenom, password, niveauID, villeID);
+				System.out.println(joueur);
+				
+				String image = cheminDeBase + separateur + "wtpwebapps" + separateur + nomApplication + separateur
+						+ "images" + separateur + joueur.getId() + ".jpg";
 
+				for (Part part : parts) {
+					switch (part.getName()) {
+					case "file":
+						try {
+							part.write(image);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						break;
+
+					}
+				}
+				
+				try {
+					req.setAttribute("joueur", joueur);
+					req.getRequestDispatcher("WEB-INF/merciInscription.jsp").forward(req, resp);
+				} catch (ServletException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
 			}
 		}
-		
-		try {
-			req.setAttribute("joueur", joueur);
-			req.getRequestDispatcher("WEB-INF/merciInscription.jsp").forward(req, resp);
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+        
 	}
 }

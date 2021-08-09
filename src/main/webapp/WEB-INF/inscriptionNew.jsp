@@ -8,31 +8,36 @@
 <title>English battle</title>
 </head>
 <body>
-<h1>Inscription</h1>
+	<h1>Inscription</h1>
+	<c:if test="${erreur ne null }">
+		<p>${erreur}</p>
+	</c:if>
 	<form action="inscriptionNew" method="post" enctype="multipart/form-data">
 		<label for="prenom">prénom</label>
-		<input type="text" name="prenom"> 
+		<input type="text" name="prenom" value="${prenom}"> 
 		<br>
 		<label for="nom">nom</label>
-		<input type="text" name="nom"> 
+		<input type="text" name="nom" value="${nom}"> 
 		<br>
 		<label for="email">email</label>
-		<input type="email" name="email"> 
+		<input type="text" name="email" value="${email}">
 		<br>
 		<label for="password">mot de passe</label>
 		<input type="password" name="password"> 
 		<br>
 		<label for="ville">ville</label>
 		<select name="ville">
+			<option value="0">choisir une ville</option>
 			 <c:forEach var="ville" items="${villes}">
-                     <option value="${ville.id}">${ville.nom} </option>
+                    <option value="${ville.id}" <c:if test="${ville.id eq idVille}">selected</c:if>>${ville.nom} </option>
              </c:forEach>
 		</select>
 		
 		<label for="niveau">niveau</label>
 		<select name="niveau">
+			<option value="0">choisir un niveau</option>
 			 <c:forEach var="niveau" items="${niveaux}">
-                     <option value="${niveau.id}">${niveau.nom} </option>
+                     <option value="${niveau.id}" <c:if test="${niveau.id eq idNiveau}">selected</c:if>>${niveau.nom} </option>
              </c:forEach>
 		</select>
 		<br>
