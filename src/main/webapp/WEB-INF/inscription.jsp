@@ -15,13 +15,13 @@
 	</c:if>
 	<form action="inscription" method="post">
 		<label for="prenom">prénom</label>
-		<input type="text" name="prenom" value="${prenom}"> 
+		<input type="text" name="prenom" <c:if test="${prenom ne null }">value="${prenom}"</c:if>> 
 		<br>
 		<label for="nom">nom</label>
-		<input type="text" name="nom" value="${nom}"> 
+		<input type="text" name="nom" <c:if test="${nom ne null }">value="${nom}"</c:if>> 
 		<br>
 		<label for="email">email</label>
-		<input type="text" name="email" value="${email}"> 
+		<input type="text" name="email" <c:if test="${email ne null }">value="${email}"</c:if>> 
 		<br>
 		<label for="password">mot de passe</label>
 		<input type="password" name="password"> 
